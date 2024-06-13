@@ -123,7 +123,7 @@ If you have already dabbled in the gateway drug to Nix that is managing your who
           ];
         };
       };
-      # Overlays --------------------------------------------------------------- {{{
+      # Overlays ---------------------------------------------------------------
       # Overlays to add various packages into package set
       overlays = {
         # Overlay useful on Macs with Apple Silicon
