@@ -1,7 +1,6 @@
 ---
 title: "HispaNix: Recursos de Nix para hispanohablantes"
 short-title: HispaNix
-slug: hispanix
 date: 2024-06-05
 ---
 <!-- LTeX: language=es -->
