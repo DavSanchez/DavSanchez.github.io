@@ -8,12 +8,14 @@ Como ya comentaba en [mi artículo anterior en español](./index.md), tengo algu
 
 ## ¿Qué es Nix?
 
+![[nix.png]]
+
 Esencialmente, Nix es una herramienta para hacer *builds* y un gestor de paquetes, tal y como lo puede ser el gestor de paquetes de Ubuntu con el que interactuamos via `apt`, Homebrew para macOS o scoop para Windows. También se denomina Nix al lenguaje de programación que se usa para describir cómo este gestor de paquetes realiza su trabajo. Nix puede usarse tanto en Linux como en macOS.
 
 Además, está relacionado con otras dos herramientas:
 
-- Nixpkgs: el principal repositorio de paquetes disponibles para su ser instalados con Nix, donde cada paquete y función está descrita con el lenguaje de programación Nix. El equivalente en Ubuntu sería el lugar donde se definen qué paquetes pueden instalarse con `apt`.
-- NixOS: un sistema operativo gestionado de forma declarativa, cuya configuración también se realiza con el lenguaje de programación Nix.
+- **Nixpkgs**: el principal repositorio de paquetes disponibles para su ser instalados con Nix, donde cada paquete y función está descrita con el lenguaje de programación Nix. El equivalente en Ubuntu sería el lugar donde se definen qué paquetes pueden instalarse con `apt`.
+- **NixOS**: un sistema operativo gestionado de forma declarativa, cuya configuración también se realiza con el lenguaje de programación Nix.
 
 Nix está fuertemente inspirado en la programación funcional y anima a adoptar una forma de trabajar con *software* declarativa y reproducible, de la que emerge lo que podríamos denominar "DevOps funcional". En esta serie de artículos pretendo mostrar las ventajas que esto tiene y cómo puedes usarlo en tus proyectos.
 
