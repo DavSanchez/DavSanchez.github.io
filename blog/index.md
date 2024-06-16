@@ -1,9 +1,12 @@
 ---
 title: Blog
 short-title: Blog
+slug: blog
 feed:
   enable: true
   title: DavidSLT Blog
+page:
+  siteUrl: https://blog.tech.davidslt.es/blog
 ---
 
 Some articles, both in Spanish and English.
