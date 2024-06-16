@@ -30,7 +30,7 @@ Ahora mismo hay dos formas de instalar Nix en tu sistema. El primero es [el inst
 - Puede deshacer los cambios realizados en tu sistema cuando instalas Nix, que dependen del sistema en cuestión y pueden [no ser triviales](https://nixos.org/manual/nix/unstable/installation/uninstall.html), facilitando el proceso de desinstalación.
 - Es más portable (¡puedes instalar Nix en tu Steam Deck!)
 
-Llevo utilizando Nix desde antes de que el instalador de DetSys estuviera disponible, por lo que no lo he probado a conciencia. El instalador oficial funciona bien igualmente, aunque parece que el objetivo a largo plazo es que la versión de DetSys se convierta en el oficial de alguna forma, por lo que podría merecer la pena usarlo.
+Llevo utilizando Nix desde antes de que el instalador de DetSys estuviera disponible, por lo que no lo he probado a conciencia. El instalador oficial funciona bien igualmente, aunque parece que el objetivo a largo plazo es que la versión de DetSys se convierta en el instalador oficial de alguna forma, por lo que podría merecer la pena empezar a usarlo.
 
 > [!info]
 > En cualquier caso, si no estás listo para hacer estos cambios en tu sistema, puedes probar Nix con Docker:
