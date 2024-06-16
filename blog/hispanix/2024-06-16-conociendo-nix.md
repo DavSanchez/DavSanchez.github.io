@@ -14,10 +14,10 @@ Esencialmente, Nix es una herramienta para hacer *builds* y un gestor de paquete
 
 Además, está relacionado con otras dos herramientas:
 
-- **Nixpkgs**: el principal repositorio de paquetes disponibles para su ser instalados con Nix, donde cada paquete y función está descrita con el lenguaje de programación Nix. El equivalente en Ubuntu sería el lugar donde se definen qué paquetes pueden instalarse con `apt`.
-- **NixOS**: un sistema operativo gestionado de forma declarativa, cuya configuración también se realiza con el lenguaje de programación Nix.
+- **Nixpkgs**: el principal repositorio de paquetes disponibles para ser instalados con Nix, donde cada paquete y función está descrita con el lenguaje de programación Nix. El equivalente en Ubuntu sería el lugar donde se definen qué paquetes pueden instalarse con `apt`, así, al hacer el clásico `apt install <PKG>`, el sistema ecuentra el paquete `<PKG>` y lo instala en nuestra máquina.
+- **NixOS**: un sistema operativo Linux gestionado de forma declarativa, cuya configuración también se realiza con el lenguaje de programación Nix.
 
-Nix está fuertemente inspirado en la programación funcional y anima a adoptar una forma de trabajar con *software* declarativa y reproducible, de la que emerge lo que podríamos denominar "DevOps funcional". En esta serie de artículos pretendo mostrar las ventajas que esto tiene y cómo puedes usarlo en tus proyectos.
+Nix está fuertemente inspirado en la programación funcional y anima a adoptar una forma de trabajar con *software* declarativa y reproducible, de la que emerge lo que podríamos denominar "*DevOps* funcional". En esta serie de artículos pretendo mostrar las ventajas que esto tiene y cómo puedes usarlo en tus proyectos.
 
 > [!info]
 > Por supuesto, puedes adoptar el uso de Nix de forma incremental, introduciéndolo en tu forma de trabajar gradualmente sin por ello sustituir tu gestor de paquetes predilecto.
