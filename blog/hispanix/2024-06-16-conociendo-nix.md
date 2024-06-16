@@ -10,9 +10,9 @@ Como ya comentaba en [mi artículo anterior en español](./index.md), tengo algu
 
 ![[nix.png]]
 
-Esencialmente, Nix es una herramienta para hacer *builds* y un gestor de paquetes, tal y como lo puede ser el gestor de paquetes de Ubuntu con el que interactuamos via `apt`, Homebrew para macOS o scoop para Windows. También se denomina Nix al lenguaje de programación que se usa para describir cómo este gestor de paquetes realiza su trabajo. Nix puede usarse tanto en Linux como en macOS.
+En esencia, Nix es un sistema de *builds* y un gestor de paquetes, tal y como lo puede ser el gestor de paquetes de Ubuntu con el que interactuamos via `apt`, Homebrew para macOS o scoop para Windows. También se denomina Nix al lenguaje de programación que se usa para describir cómo este gestor de paquetes realiza su trabajo. Nix puede usarse tanto en Linux como en macOS.
 
-Además, está relacionado con otras dos herramientas:
+Además, está relacionado con otros dos proyectos:
 
 - **Nixpkgs**: el principal repositorio de paquetes disponibles para ser instalados con Nix, donde cada paquete y función está descrita con el lenguaje de programación Nix. El equivalente en Ubuntu sería el lugar donde se definen qué paquetes pueden instalarse con `apt`, de forma que al ejecutar `apt install <PKG>` el sistema ecuentra el paquete `<PKG>` y lo instala en nuestra máquina.
 - **NixOS**: un sistema operativo Linux gestionado de forma declarativa, cuya configuración también se realiza con el lenguaje de programación Nix.
@@ -20,7 +20,7 @@ Además, está relacionado con otras dos herramientas:
 Nix está fuertemente inspirado en la programación funcional y anima a adoptar una forma de trabajar con *software* declarativa y reproducible, de la que emerge lo que podríamos denominar "*DevOps* funcional". En esta serie de artículos pretendo mostrar las ventajas que esto tiene y cómo puedes usarlo en tus proyectos.
 
 > [!info]
-> Por supuesto, puedes adoptar el uso de Nix de forma incremental, introduciéndolo en tu forma de trabajar gradualmente sin por ello sustituir tu gestor de paquetes predilecto.
+> Puedes adoptar el uso de Nix de forma incremental, introduciéndolo en tu forma de trabajar gradualmente sin por ello sustituir tu gestor de paquetes predilecto.
 
 ## Instalando Nix
 
@@ -33,7 +33,7 @@ Ahora mismo hay dos formas de instalar Nix en tu sistema. El primero es [el inst
 Llevo utilizando Nix desde antes de que el instalador de DetSys estuviera disponible, por lo que no lo he probado a conciencia. El instalador oficial funciona bien igualmente, aunque parece que el objetivo a largo plazo es que la versión de DetSys se convierta en el instalador oficial de alguna forma, por lo que podría merecer la pena empezar a usarlo.
 
 > [!info]
-> En cualquier caso, si no estás listo para hacer estos cambios en tu sistema, puedes probar Nix con Docker:
+> Si no estás listo para hacer estos cambios en tu sistema, puedes probar Nix con Docker:
 >
 > - Ejecuta un contenedor de NixOS con `docker run -it nixos/nix`.
 > - Ejecuta cualquier otro contenedor de Linux e instala Nix en él (el instalador de DetSys también está preparado para instalar sobre contenedores).
@@ -51,7 +51,7 @@ Llevo utilizando Nix desde antes de que el instalador de DetSys estuviera dispon
 > (Por supuesto, estas configuraciones pueden ser descritas declarativamente con Nix, pero aún no hemos llegado a eso).
 
 > [!info]
-> A no ser que se indique lo contrario, los ejemplos a continuación están hechos en un sistema **macOS** utilizando **zsh** como shell por defecto.
+> A no ser que se indique lo contrario, los ejemplos a continuación están hechos en un sistema **macOS** utilizando **zsh** como *shell* por defecto.
 
 Tras haber instalado Nix, prueba a ejecutar un programa[^cowsay-example] directamente, **sin instalarlo**:
 
@@ -131,7 +131,7 @@ lrwxr-xr-x ... result-man ⇒ /nix/store/yspq7q2as6pdg7jjaq1pphf81ym8ayy5-cowsay
 
 Estos conceptos están directamente relacionados con una de las configuraciones que asumimos como activadas al principio: los *flakes*.
 
-Un *flake* es una ubicación que expone expresiones de Nix (el lenguaje de programación), que pueden usarse para construir o compilar paquetes, ejecutar aplicaciones, crear entornos de desarrollo (que exploraremos en el siguiente artículo) o describir sistemas completos del sistema operativo NixOS o macOS (más sobre esto en el futuro). Los *flakes* pueden **componerse**, lo que siginifica que un *flake* puede declarar otros *flakes* como dependencias, y las expresiones expuestas por tu *flake* pueden ser usadas por otros *flakes* como dependencias, etc.
+Un *flake* es una ubicación que expone expresiones de Nix (el lenguaje de programación), que pueden usarse para construir o compilar paquetes, ejecutar aplicaciones, crear entornos de desarrollo (que exploraremos en el siguiente artículo) o describir sistemas completos del sistema operativo NixOS o macOS (más sobre esto en el futuro). Estas expresiones expuestas por un *flake* son sus **salidas**. Los *flakes* pueden **componerse**, lo que siginifica que un *flake* puede declarar otros *flakes* como dependencias, y las expresiones expuestas por tu *flake* pueden ser usadas por otros *flakes* como dependencias, etc.
 
 Cuando digo ubicación, me refiero a un directorio que contiene tanto un fichero `flake.nix` como un `flake.lock`. La *referencia* de un *flake* es, por tanto, una indicación de cómo y dónde está esta ubicación. Hay varios tipos de referencias, dejo algunos ejemplos:
 
