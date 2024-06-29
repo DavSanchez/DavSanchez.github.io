@@ -10,14 +10,16 @@ Como ya comentaba en [mi artículo anterior en español](./index.md), tengo algu
 
 ![[nix.png]]
 
-En esencia, Nix es un sistema de *builds* y un gestor de paquetes, tal y como lo puede ser el gestor de paquetes de Ubuntu con el que interactuamos via `apt`, Homebrew para macOS o scoop para Windows. También se denomina Nix al lenguaje de programación que se usa para describir cómo este gestor de paquetes realiza su trabajo. Nix puede usarse tanto en Linux como en macOS.
+Esencialmente, Nix es un sistema de *builds* y un gestor de paquetes, tal y como lo puede ser el gestor de paquetes de Ubuntu con el que interactuamos via `apt`, Homebrew para macOS o scoop para Windows. También se denomina Nix al lenguaje de programación que se usa para describir cómo este gestor de paquetes realiza su trabajo. Nix puede usarse tanto en Linux como en macOS (y en cierta medida en Windows, a través de WSL).
 
 Además, está relacionado con otros dos proyectos:
 
-- **Nixpkgs**: el principal repositorio de paquetes disponibles para ser instalados con Nix, donde cada paquete y función está descrita con el lenguaje de programación Nix. El equivalente en Ubuntu sería el lugar donde se definen qué paquetes pueden instalarse con `apt`, de forma que al ejecutar `apt install <PKG>` el sistema ecuentra el paquete `<PKG>` y lo instala en nuestra máquina.
-- **NixOS**: un sistema operativo Linux gestionado de forma declarativa, cuya configuración también se realiza con el lenguaje de programación Nix.
+- **Nixpkgs**: el principal repositorio de paquetes disponibles para su ser instalados con Nix, donde cada paquete y función está descrita con el lenguaje de programación Nix. El equivalente en Ubuntu sería el lugar donde se definen qué paquetes pueden instalarse con `apt`. Nixpkgs cuenta con más de 100000 paquetes que se actualizan regularmente.
+- **NixOS**: un sistema operativo gestionado de forma declarativa, cuya configuración también se realiza con el lenguaje de programación Nix.
 
-Nix está fuertemente inspirado en la programación funcional y anima a adoptar una forma de trabajar con *software* declarativa y reproducible, de la que emerge lo que podríamos denominar "*DevOps* funcional". En esta serie de artículos pretendo mostrar las ventajas que esto tiene y cómo puedes usarlo en tus proyectos.
+Nix está fuertemente inspirado en la programación funcional y anima a adoptar una forma de trabajar con *software* declarativa y reproducible, de la que emerge lo que podríamos denominar "DevOps funcional". La reproducibilidad se consigue en gran medida porque las *builds* de Nix se realizan de forma aislada, con sus dependencias explícitamente definidas, de forma que no pueda haber alguna dependencia oculta que influencie nuestra *build* (por ejemplo, una variable de entorno de nuestra *shell* fijada a un valor concreto).
+
+En esta serie de artículos pretendo mostrar las ventajas que esto tiene y cómo puedes usarlo en tus proyectos.
 
 > [!info]
 > Puedes adoptar el uso de Nix de forma incremental, introduciéndolo en tu forma de trabajar gradualmente sin por ello sustituir tu gestor de paquetes predilecto.
@@ -111,6 +113,14 @@ nix run "nixpkgs#tre-command" -- /nix/store/yspq7q2as6pdg7jjaq1pphf81ym8ayy5-cow
             ├── cowthink.1.gz
             └── cowsay.1.gz
 ```
+
+
+> [!info] ¿Por qué los *hashes* en la ruta?
+> Las rutas de la Nix Store empiezan con un *hash* seguido del nombre y la versión de lo que contienen. Aunque no ahondaremos en esto en este artículo, este *hash* se calcula a partir de los parámetros de entrada del paquete (parámetros de la *build*, dependencias, versiones de estas dependencias, etc).
+>
+> Cualquier cambio en estos parámetros cambiará el valor del *hash*, por lo que cada ruta será **única**. Además, la Nix Store es un sistema de ficheros de sólo lectura, por lo que una vez se construye un paquete y se introduce en la Store, **no puede ser modificado**.
+>
+> Dado que Nix construye los paquetes de forma aislada, y el resultado de esta construcción solo depende de los parámetros de entrada, **usar los mismos parámetros de entrada siempre producirá la misma salida**. Esto tiene poderosas implicaciones en la distribución de software y el uso de cachés para acelerar los tiempos de compilación, que probablemente exploremos en futuros artículos.
 
 También fíjate en lo siguiente. Cuando ejecutaste `nix build "nixpkgs#cowsay`, los resultados que se almacenaron en la Nix Store quedan también enlazados a una ubicación en el mismo directorio donde ejecutaste el comando, dentro de unos directorios llamados `result`:
 
