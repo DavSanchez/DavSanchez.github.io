@@ -114,7 +114,6 @@ nix run "nixpkgs#tre-command" -- /nix/store/yspq7q2as6pdg7jjaq1pphf81ym8ayy5-cow
             └── cowsay.1.gz
 ```
 
-
 > [!info] ¿Por qué los *hashes* en la ruta?
 > Las rutas de la Nix Store empiezan con un *hash* seguido del nombre y la versión de lo que contienen. Aunque no ahondaremos en esto en este artículo, este *hash* se calcula a partir de los parámetros de entrada del paquete (parámetros de la *build*, dependencias, versiones de estas dependencias, etc).
 >
