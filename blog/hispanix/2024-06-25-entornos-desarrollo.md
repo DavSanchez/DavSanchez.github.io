@@ -275,7 +275,7 @@ $ go version
 go version go1.19.13 darwin/arm64
 ```
 
-¡Listo! Como si fuera un `virtualenv` de Python, pero para cualquier lenguaje y más, usar `nix develop` nos introduce en una nueva *shell* con los paquetes que definimos disponibles en el `$PATH`. ¡De forma nativa! ¡Sin contenedores, volúmenes, etc!
+¡Listo! **Como si fuera un `virtualenv` de Python, pero para cualquier lenguaje y más**, usar `nix develop` nos introduce en una nueva *shell* con los paquetes que definimos disponibles en el `$PATH`. ¡De forma nativa! ¡Sin contenedores, volúmenes, etc!
 
 Ahora escribe algo de código, compílalo[^go-compile], y ya hablaremos de cómo empaquetar tu programa de Go con Nix en un futuro artículo.
 
@@ -328,7 +328,7 @@ Mis plantillas definen como entrada [`cachix/git-hooks.nix`](https://github.com/
 
 Esto depende de tus preferencias personales. `nix develop` utiliza Bash por defecto. Yo utilizo [`zsh-nix-shell`](https://github.com/chisui/zsh-nix-shell), un plugin que permite usar ZSH como *devShell*, y también [`starship`](https://starship.rs/) para personalizar el *prompt*.
 
-### ¿Tengo que ejecutar *nix develop* cada vez que quiero entrar en la *devShell*?
+### ¿Tengo que ejecutar `nix develop` cada vez que quiero entrar en la *devShell*?
 
 Puedes automatizar esto gracias a [`direnv`](https://direnv.net). Si echaste un vistazo a mis plantillas verás que incluyen un fichero `.envrc`. Este fichero ayuda a conseguir este comportamiento. Si me muevo dentro de un directorio que es un *flake* con `cd`, la *devShell* se activa automáticamente. Si hago `cd` y salgo de la *shell*, se desactiva.
 
