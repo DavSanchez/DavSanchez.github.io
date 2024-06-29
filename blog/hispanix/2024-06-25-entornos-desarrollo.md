@@ -4,7 +4,7 @@ date: 2024-06-26
 ---
 <!-- LTeX: language=es -->
 
-![[nix.png]]
+![](./nix.png)
 
 Tras la introducción a Nix que vimos en el [artículo anterior](./2024-06-16-conociendo-nix.md), continuamos con uno de los casos de uso más potentes de esta herramienta.
 

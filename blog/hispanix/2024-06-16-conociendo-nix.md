@@ -8,7 +8,7 @@ Como ya comentaba en [mi artículo anterior en español](./index.md), tengo algu
 
 ## ¿Qué es Nix?
 
-![[nix.png]]
+![](./nix.png)
 
 Esencialmente, Nix es un sistema de *builds* y un gestor de paquetes, tal y como lo puede ser el gestor de paquetes de Ubuntu con el que interactuamos via `apt`, Homebrew para macOS o scoop para Windows. También se denomina Nix al lenguaje de programación que se usa para describir cómo este gestor de paquetes realiza su trabajo. Nix puede usarse tanto en Linux como en macOS (y en cierta medida en Windows, a través de WSL).
 
