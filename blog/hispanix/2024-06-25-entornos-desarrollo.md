@@ -4,7 +4,7 @@ date: 2024-06-26
 ---
 <!-- LTeX: language=es -->
 
-Tras la introducción a Nix que vimos en el artículo anterior, continuamos con uno de los casos de uso más potentes de esta herramienta.
+Tras la introducción a Nix que vimos en el [artículo anterior](./2024-06-16-conociendo-nix.md), continuamos con uno de los casos de uso más potentes de esta herramienta.
 
 > [!warning]
 > De forma similar al [artículo anterior](./2024-06-16-conociendo-nix.md), a partir de aquí asumiremos que has instalado Nix y activado dos configuraciones opcionales que facilitan mucho la experiencia de usuario con Nix. Si usaste el instalador oficial, puedes activarlas individualmente para cada comando del terminal usando `nix --extra-experimental-features "nix-command flakes"`, o activarlas globalmente añadiendo lo siguiente a `~/.config/nix/nix.conf` o `/etc/nix/nix.conf`:
