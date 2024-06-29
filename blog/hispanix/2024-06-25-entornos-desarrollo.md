@@ -312,12 +312,12 @@ Puedes leer más [aquí](https://nixos.org/guides/nix-pills/11-garbage-collector
 Existe un mecanismo para descargar plantillas, que también pueden exponerse como salidas de un *flake*. Por ejemplo, yo mantengo un *flake* con [algunas de ellas](https://github.com/DavSanchez/nix-dotfiles/tree/master/templates) (aunque no las he actualizado para que usen `flake-parts` aún).
 
 - Para proyectos de Rust, con algunas utilidades para configurar las *toolchains* (utilizando [fenix]) y *git hooks*. Puedes descargarla con `nix flake init -t "github:DavSanchez/nix-dotfiles#rust_fenix_precommit"`.
-- Para proyectos de Go, con `git hooks`, usa `nix flake init -t "github:DavSanchez/nix-dotfiles#go_precommit"`
-- Para proyectos con Haskell y `git hooks`, usa `nix flake init -t "github:DavSanchez/nix-dotfiles#haskell_precommit"`.
+- Para proyectos de Go, con *git hooks*, usa `nix flake init -t "github:DavSanchez/nix-dotfiles#go_precommit"`
+- Para proyectos con Haskell y *git hooks*, usa `nix flake init -t "github:DavSanchez/nix-dotfiles#haskell_precommit"`.
 
 ### ¿Cómo configuro los *git hooks*?
 
-Si leíste el apartado anterior, verás que menciono repetidamente los `git hooks`. En mi opinión son una herramienta muy útil para asegurarte de que tu código cumple ciertos estándares antes de realizar un *commit* (¿pasa los tests unitarios? ¿Está formateado?) o para usar algún formato en tus mensajes de *commit*, como [*conventional commits*](https://www.conventionalcommits.org/en/v1.0.0/).
+Si leíste el apartado anterior, verás que menciono repetidamente los *git hooks*. En mi opinión son una herramienta muy útil para asegurarte de que tu código cumple ciertos estándares antes de realizar un *commit* (¿pasa los tests unitarios? ¿Está formateado?) o para usar algún formato en tus mensajes de *commit*, como [*conventional commits*](https://www.conventionalcommits.org/en/v1.0.0/).
 
 Mis plantillas definen como entrada [`cachix/git-hooks.nix`](https://github.com/cachix/git-hooks.nix) para definir estos *hooks* con Nix y cargarlos directamente en tu *devShell* con *shellHook*. Echa un vistazo al repositorio de `git-hooks.nix` para ver qué *hooks* están disponibles y cómo crear los tuyos propios.
 
