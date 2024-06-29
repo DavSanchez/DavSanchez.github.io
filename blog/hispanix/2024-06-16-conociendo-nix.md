@@ -114,6 +114,14 @@ nix run "nixpkgs#tre-command" -- /nix/store/yspq7q2as6pdg7jjaq1pphf81ym8ayy5-cow
             └── cowsay.1.gz
 ```
 
+
+> [!info] ¿Por qué los *hashes* en la ruta?
+> Las rutas de la Nix Store empiezan con un *hash* seguido del nombre y la versión de lo que contienen. Aunque no ahondaremos en esto en este artículo, este *hash* se calcula a partir de los parámetros de entrada del paquete (parámetros de la *build*, dependencias, versiones de estas dependencias, etc).
+>
+> Cualquier cambio en estos parámetros cambiará el valor del *hash*, por lo que cada ruta será **única**. Además, la Nix Store es un sistema de ficheros de sólo lectura, por lo que una vez se construye un paquete y se introduce en la Store, **no puede ser modificado**.
+>
+> Dado que Nix construye los paquetes de forma aislada, y el resultado de esta construcción solo depende de los parámetros de entrada, **usar los mismos parámetros de entrada siempre producirá la misma salida**. Esto tiene poderosas implicaciones en la distribución de software y el uso de cachés para acelerar los tiempos de compilación, que probablemente exploremos en futuros artículos.
+
 También fíjate en lo siguiente. Cuando ejecutaste `nix build "nixpkgs#cowsay`, los resultados que se almacenaron en la Nix Store quedan también enlazados a una ubicación en el mismo directorio donde ejecutaste el comando, dentro de unos directorios llamados `result`:
 
 ```console

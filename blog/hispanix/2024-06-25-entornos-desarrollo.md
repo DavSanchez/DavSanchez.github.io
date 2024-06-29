@@ -12,8 +12,9 @@ Tras la introducción a Nix que vimos en el artículo anterior, continuamos con 
 > > ```conf
 > > experimental-features = nix-command flakes
 > > ```
->
-> (Por supuesto, estas configuraciones pueden ser descritas declarativamente con Nix, pero aún no hemos llegado a eso).
+
+> [!info]
+> A no ser que se indique lo contrario, los ejemplos a continuación están hechos en un sistema **macOS** utilizando **zsh** como shell por defecto.
 
 Imagina que tienes un proyecto de software en el que estás trabajando, quizá en las etapas iniciales. No tienes interés en empaquetar el producto en Nixpkgs ni nada parecido, porque quizá aún no tienes nada que lanzar aún, pero sí que te gustaría:
 
@@ -57,7 +58,7 @@ Un fichero `flake.nix` contiene lo que en lenguaje Nix se denomina un **conjunto
 }
 ```
 
-Recordemos que Nix hace que nuestras *builds* sean declarativas y reproducibles. Cualquier salida que definamos vendrá determinada por las entradas que definamos, y por nada más. Veamos, entonces, cómo se definen estos *inputs* (entradas) y *outputs* (salidas).
+Recordemos que Nix hace que nuestras *builds* sean declarativas y **reproducibles**. Cualquier salida que definamos vendrá determinada por las entradas que definamos, y por nada más. Veamos, entonces, cómo se definen estos *inputs* (entradas) y *outputs* (salidas).
 
 #### Entradas
 
@@ -221,4 +222,121 @@ Dicho esto, para el caso que nos ocupa en este tutorial, combinaciones de sistem
 }
 ```
 
+Este `eachDefaultSystem` que hemos utilizado es una función que recibe otra función como parámetro (ya hablé de la programación funcional), y esta función a su vez recibiría un parámetro que llamamos `system`, que utilizamos en el cuerpo de la función para definir el conjunto de paquetes que definirá nuestro *devShell*. ¿Qué argumento de `system` usa esa función? De eso se encarga `eachDefaultSystem`, que pasa una lista con los siguientes valores:
 
+- `x86_64-linux`
+- `aarch64-linux`
+- `x86_64-darwin`
+- `aarch64-darwin`
+
+> [!tip]
+> Para comenzar de forma simple he sugerido utilizar `flake-utils`, pero para algo más avanzado y modular, que uso actualmente en mis *flakes*, recomiendo [`flake-parts`](https://flake.parts).
+
+Vamos a ver cuáles son las salidas de nuestro *flake* ejecutando `nix flake show` en el directorio raíz de tu *flake* (o, ya sabes, `nix flake show "path:/ruta/a/tu/flake"`). Nix tardará un tiempo en evaluar el código Nix de tu *flake*, descargar las entradas y evaluar las salidas, pero finalmente se mostrará algo parecido a esto:
+
+```console
+$ nix flake show
+warning: creating lock file '/Users/david/random/flake.lock'
+path:/Users/david/random?lastModified=1695943648&narHash=sha256-CbZ16gnffi0%2B9ig270ifpbHYOKS4CreKnH7GlPi
+└───devShells
+    ├───aarch64-darwin
+    │   └───default: development environment 'nix-shell'
+    ├───aarch64-linux
+    │   └───default omitted (use '--all-systems' to show)
+    ├───x86_64-darwin
+    │   └───default omitted (use '--all-systems' to show)
+    └───x86_64-linux
+        └───default omitted (use '--all-systems' to show)
+```
+
+El fichero `flake.lock` es un *lockfile*, que tiene un propósito similar a los probablemente más conocidos `package-lock.json` para proyectos del ecosistema JavaScript, `Gemfile.lock` para Ruby, `Cargo.lock` para Rust, etc. Contendrá los *hashes* de todas las entradas de nuestro *flake*, asegurando la reproducibilidad e integridad de nuestras entradas.
+
+#### Entrando en la *shell*
+
+Entonces, ¿qué falta? ¿Cómo accedemos a la versión de Go que hemos declarado en este entorno de desarrollo? Podemos hacerlo con `nix develop`:
+
+```console
+$ which go
+/opt/homebrew/opt/go # Ejemplo de una instalación de Go existente
+
+$ go version
+go version go1.20.8 darwin/arm64
+
+$ nix develop
+# Se tomará su tiempo, pero después...
+
+$ which go
+/nix/store/3yndvq32rxh6h9bqjd6n20npk2ix0ah2-go-1.19.13/bin/go
+
+$ go version
+go version go1.19.13 darwin/arm64
+```
+
+¡Listo! Como si fuera un `virtualenv` de Python, pero para cualquier lenguaje y más, usar `nix develop` nos introduce en una nueva *shell* con los paquetes que definimos disponibles en el `$PATH`. ¡De forma nativa! ¡Sin contenedores, volúmenes, etc!
+
+Ahora escribe algo de código, compílalo[^go-compile], y ya hablaremos de cómo empaquetar tu programa de Go con Nix en un futuro artículo.
+
+Para salir de esta *shell* y volver al estado anterior a utilizar `nix develop`, simplemente ejecuta `exit` o usa `Ctrl + D`.
+
+Por supuesto, podrás intuir que esto no es lo único que se puede hacer en cuanto a definir *shells* o empaquetar software. Puedes hacer chequeos automatizados, usar *shell hooks* para ejecutar acciones al entrar en la *shell*, configurar *pre-commit hooks* para personalizar tu trabajo con `git`, referenciar otros ficheros dentro del *flake* (como una configuración en formato YAML) con `import`, definir *bundlers* y empaquetar el software para sistemas que no usen Nix... ¡Y mucho más!
+
+> [!tip]
+> Tampoco es completamente necesario entrar a picar código Nix y definir todo esto a mano. Aunque lo recomiendo para que saber más o menos lo que ocurre, hay muchas iniciativas para abstraer muchos de los mecanismos internos y comenzar a trabajar más rápidamente.
+>
+> El que puedo recomendar es [`devenv.sh`](https://devenv.sh), cuyo autor es un contribuidor principal del ecosistema (también autor de [`cachix`](https://www.cachix.org), `git-hooks.nix` y algunas GitHub Actions para instalar Nix en los *runners*). `devenv.sh` también se configura con el lenguaje Nix, pero de forma bastante sencilla.
+>
+> También hay alternativas que utilizan YAML o JSON, como [Flox](https://flox.dev) o [DevBox](https://www.jetify.com/devbox), respectivamente. Estos últimos apenas los conozco, y aunque pueden ofrecer algunas comodidades, en mi opinión parecen abstraer demasiado lo que ocurre y podrían no cubrir todos los casos de uso particulares.
+>
+> Como ves, el ecosistema es [muy amplio](https://nix-community.github.io/awesome-nix/).
+
+Probablemente también tengas muchas preguntas. Trato de responder a algunas de ellas en el apartado siguiente, enlazando a recursos relevantes, aunque puedo desarrollar estos temas en futuros artículos o si me preguntas directamente.
+
+## Algunas preguntas y respuestas rápidas
+
+### ¿Cómo sé si un paquete que necesito está disponible en Nixpkgs?
+
+Puedes buscar [aquí](https://search.nixos.org/packages). Si utilizas DuckDuckGo, puedes acceder a esta búsqueda rápidamente con `!nixpkgs`. Por ejemplo, usa `!nixpkgs python` para ver qué paquetes relacionados con Python hay en Nixpkgs.
+
+### Trabajar con *devShells* descarga cosas en mi sistema. ¿Cómo limpio lo que ya no necesito?
+
+Aunque puede dar la impresión de que no *instalas* nada de forma permanente en tu máquina cuando configuras todos estos entornos de desarrollo y descargas paquetes con Nix, obviamente todos estos recursos están en tu sistema y ocupan espacio.
+
+Nix usa un recolector de basura para eliminar contenido de la Nix Store que no utilizas. Este recolector puede configurarse para ejecutar regularmente, o puedes llamarlo directamente con `nix store gc` (no necesitas estar dentro de un *flake* o un *devShell* para ello).
+
+Como intuirás, hay mucho más detrás de esta operación. ¿Cómo puede Nix identificar lo que está en uso y lo que no? ¿Está esto relacionado con los enlaces simbólicos que se crearon cuando ejecutamos `nix build` en [el tutorial anterior](./2024-06-16-conociendo-nix.md)?
+
+Puedes leer más [aquí](https://nixos.org/guides/nix-pills/11-garbage-collector.html) y [aquí](https://nixos.wiki/wiki/Storage_optimization).
+
+### ¿Tengo que escribir siempre los *flakes* desde cero?
+
+Existe un mecanismo para descargar plantillas, que también pueden exponerse como salidas de un *flake*. Por ejemplo, yo mantengo un *flake* con [algunas de ellas](https://github.com/DavSanchez/nix-dotfiles/tree/master/templates) (aunque no las he actualizado para que usen `flake-parts` aún).
+
+- Para proyectos de Rust, con algunas utilidades para configurar las *toolchains* (utilizando [fenix]) y *git hooks*. Puedes descargarla con `nix flake init -t "github:DavSanchez/nix-dotfiles#rust_fenix_precommit"`.
+- Para proyectos de Go, con `git hooks`, usa `nix flake init -t "github:DavSanchez/nix-dotfiles#go_precommit"`
+- Para proyectos con Haskell y `git hooks`, usa `nix flake init -t "github:DavSanchez/nix-dotfiles#haskell_precommit"`.
+
+### ¿Cómo configuro los *git hooks*?
+
+Si leíste el apartado anterior, verás que menciono repetidamente los `git hooks`. En mi opinión son una herramienta muy útil para asegurarte de que tu código cumple ciertos estándares antes de realizar un *commit* (¿pasa los tests unitarios? ¿Está formateado?) o para usar algún formato en tus mensajes de *commit*, como [*conventional commits*](https://www.conventionalcommits.org/en/v1.0.0/).
+
+Mis plantillas definen como entrada [`cachix/git-hooks.nix`](https://github.com/cachix/git-hooks.nix) para definir estos *hooks* con Nix y cargarlos directamente en tu *devShell* con *shellHook*. Echa un vistazo al repositorio de `git-hooks.nix` para ver qué *hooks* están disponibles y cómo crear los tuyos propios.
+
+### ¿Cómo personalizo mis *devShells*?
+
+Esto depende de tus preferencias personales. `nix develop` utiliza Bash por defecto. Yo utilizo [`zsh-nix-shell`](https://github.com/chisui/zsh-nix-shell), un plugin que permite usar ZSH como *devShell*, y también [`starship`](https://starship.rs/) para personalizar el *prompt*.
+
+### ¿Tengo que ejecutar *nix develop* cada vez que quiero entrar en la *devShell*?
+
+Puedes automatizar esto gracias a [`direnv`](https://direnv.net). Si echaste un vistazo a mis plantillas verás que incluyen un fichero `.envrc`. Este fichero ayuda a conseguir este comportamiento. Si me muevo dentro de un directorio que es un *flake* con `cd`, la *devShell* se activa automáticamente. Si hago `cd` y salgo de la *shell*, se desactiva.
+
+Hay un artículo en el [blog de Determinate Systems](https://determinate.systems/posts/nix-direnv) con más detalles.
+
+### ¿Qué más se puede hacer?
+
+¿Podría usar Nix en mis líneas de CI/CD con [GitHub Actions](https://nix.dev/tutorials/nixos/continuous-integration-github-actions)? ¿Puedo configurar todo mi [sistema](https://github.com/DavSanchez/nix-dotfiles/) o mi [usuario](https://github.com/nix-community/home-manager) de forma declarativa con Nix? ¿Aunque esté en [macOS](https://github.com/LnL7/nix-darwin)? ¿Qué hay de [NixOS](https://search.nixos.org/options?query=options)?
+
+Probablemente exploremos todas estas cosas en futuros artículos. De momento ahí tienes algunos enlaces a documentación y plantillas para ir abriendo boca.
+
+¡Nos vemos en el siguiente!
+
+[^go-compile]: Para los lenguajes compilados para Linux y que usen enlazado dinámico (como Go al habilitar CGO) hay ciertos detalles que no hemos cubierto en este artículo y que te puedes encontrar si avanzas más por tu cuenta. Si las rutas de todas las dependencias están en la Nix Store, dónde espera un binario con *dynamic linking*, generado con Nix, encontrar al *dynamic loader*? ¿Sigue siendo en rutas como `/lib64/ld-linux-x86-64.so.2`? 🙃
