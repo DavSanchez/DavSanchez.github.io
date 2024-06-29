@@ -51,7 +51,7 @@ Llevo utilizando Nix desde antes de que el instalador de DetSys estuviera dispon
 > > ```
 >
 > (Por supuesto, estas configuraciones pueden ser descritas declarativamente con Nix, pero aún no hemos llegado a eso).
-
+<!--  -->
 > [!info]
 > A no ser que se indique lo contrario, los ejemplos a continuación están hechos en un sistema **macOS** utilizando **zsh** como *shell* por defecto.
 
@@ -132,7 +132,7 @@ lrwxr-xr-x ... result-man ⇒ /nix/store/yspq7q2as6pdg7jjaq1pphf81ym8ayy5-cowsay
 
 > [!info]
 > Para evitar que esto pase, puedes usar `--no-link`.
-
+<!--  -->
 > [!tip]
 > La información con la que me gustaría que te quedaras es que un binario que ejecutas via Nix será parte de un paquete, pero estos paquetes también pueden contener *man pages* u otros ficheros. Podría contener una configuración de `git` o de `vim`, que podríamos luego enlazar a `~/.gitconfig` o `~/.config/vim/`... pero esto lo exploraremos en otro artículo 😉.
 

@@ -4,6 +4,8 @@ date: 2024-06-26
 ---
 <!-- LTeX: language=es -->
 
+![[nix.png]]
+
 Tras la introducción a Nix que vimos en el [artículo anterior](./2024-06-16-conociendo-nix.md), continuamos con uno de los casos de uso más potentes de esta herramienta.
 
 > [!warning]
@@ -12,7 +14,7 @@ Tras la introducción a Nix que vimos en el [artículo anterior](./2024-06-16-co
 > > ```conf
 > > experimental-features = nix-command flakes
 > > ```
-
+<!--  -->
 > [!info]
 > A no ser que se indique lo contrario, los ejemplos a continuación están hechos en un sistema **macOS** utilizando **zsh** como shell por defecto.
 
@@ -216,6 +218,7 @@ Dicho esto, para el caso que nos ocupa en este tutorial, combinaciones de sistem
     devShells.default = pkgs.mkShell {
       packages = with pkgs; [
         go_1_19
+        terraform
       ];
     };
   });
@@ -339,4 +342,4 @@ Probablemente exploremos todas estas cosas en futuros artículos. De momento ah�
 
 ¡Nos vemos en el siguiente!
 
-[^go-compile]: Para los lenguajes compilados para Linux y que usen enlazado dinámico (como Go al habilitar CGO) hay ciertos detalles que no hemos cubierto en este artículo y que te puedes encontrar si avanzas más por tu cuenta. Si las rutas de todas las dependencias están en la Nix Store, dónde espera un binario con *dynamic linking*, generado con Nix, encontrar al *dynamic loader*? ¿Sigue siendo en rutas como `/lib64/ld-linux-x86-64.so.2`? 🙃
+[^go-compile]: Para los lenguajes compilados para Linux y que usen enlazado dinámico (como Go al habilitar CGO) hay ciertos detalles de distribución que no hemos cubierto en este artículo y que te puedes encontrar si avanzas más por tu cuenta. Si las rutas de todas las dependencias están en la Nix Store, dónde espera un binario con *dynamic linking*, generado con Nix, encontrar al *dynamic loader*? ¿Sigue siendo en rutas como `/lib64/ld-linux-x86-64.so.2`? 🙃
