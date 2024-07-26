@@ -41,6 +41,8 @@ Este es el aspecto que tiene la configuración de un sistema NixOS:
   users.users.david = {
     isNormalUser = true;
     # Existen opciones para gestionar las contraseñas
+    # ¡No sería seguro incluirlas tal cual aquí!
+    # Acabarían en texto plano en la Nix Store
   };
 
   # Paquetes definidos a nivel de sistema
