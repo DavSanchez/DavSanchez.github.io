@@ -57,7 +57,7 @@ hayamos definido?
 ![Mind blown!](./img/mind_blown.gif)
 :::
 
-En lenguajes de programación funcional como Haskell, el comportamiento de `map` está definido en
+En Haskell, y otros lenguajes de programación funcional, el comportamiento de `map` está definido en
 lo equivalente a un *trait* de Rust (en dicho lenguaje, los *traits* se llaman *typeclasses*).
 Este *trait* se llama `Functor`. La [documentación](https://hackage.haskell.org/package/base-4.20.0.1/docs/Prelude.html#t:Functor) sobre `Functor`, aunque algo matemática, parece estar de acuerdo con nuestro razonamiento anterior:
 
