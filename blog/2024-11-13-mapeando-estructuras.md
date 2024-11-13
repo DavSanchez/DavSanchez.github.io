@@ -57,6 +57,9 @@ lo equivalente a un *trait* de Rust (en dicho lenguaje, los *traits* se llaman *
 Este *trait* se llama `Functor`. La documentación sobre `Functor`, aunque algo matemática, parece
 estar de acuerdo con nuestro razonamiento anterior:
 
+> Un tipo f es un Functor si proporciona una función fmap que, dados dos tipos arbitrarios a y b
+> permite aplicar cualquier función (a -> b) transformando f a en un f b, preservando la estructura
+> de f.
 
 In Haskell :haskell-intensifies2:, the behavior of map is indeed defined under a trait (traits are called typeclasses there). This trait is called Functor. The documentation, though a bit "mathy", agrees with our reasoning above:
 A type f is a Functor if it provides a function fmap which, given any types a and b lets you apply any function from (a -> b) to turn an f a into an f b, preserving the structure of f.
