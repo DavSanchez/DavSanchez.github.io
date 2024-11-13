@@ -54,39 +54,51 @@ hayamos definido?
 
 En lenguajes de programación funcional como Haskell, el comportamiento de `map` está definido en
 lo equivalente a un *trait* de Rust (en dicho lenguaje, los *traits* se llaman *typeclasses*).
-Este *trait* se llama `Functor`. La documentación sobre `Functor`, aunque algo matemática, parece
-estar de acuerdo con nuestro razonamiento anterior:
+Este *trait* se llama `Functor`. La [documentación](https://hackage.haskell.org/package/base-4.20.0.1/docs/Prelude.html#t:Functor) sobre `Functor`, aunque algo matemática, parece estar de acuerdo con nuestro razonamiento anterior:
 
-> Un tipo f es un Functor si proporciona una función fmap que, dados dos tipos arbitrarios a y b
-> permite aplicar cualquier función (a -> b) transformando f a en un f b, preservando la estructura
-> de f.
+> Un tipo `f` es un `Functor` si proporciona una función `fmap` que, dados dos tipos arbitrarios `a`
+> y `b` permite aplicar cualquier función `(a -> b)` transformando `f a` en un `f b`, preservando la
+> estructura de `f`.
 
-In Haskell :haskell-intensifies2:, the behavior of map is indeed defined under a trait (traits are called typeclasses there). This trait is called Functor. The documentation, though a bit "mathy", agrees with our reasoning above:
-A type f is a Functor if it provides a function fmap which, given any types a and b lets you apply any function from (a -> b) to turn an f a into an f b, preserving the structure of f.
-The function is called fmap instead of map for historical reasons (map was of course initially defined for lists :wink: and then generalized) and ease of use (newcomers to Haskell will begin using map on lists and then abstract out to fmap).
-8:35
-There's Functor implementations for many types in the ecosystem, such as for:
-Lists
-Sets
-Maps
-Maybe (Haskell's Option)
-Either (Haskell's Result)
-Tuples of various elements
-Functions themselves (!!)
-... and many others, usually in icreasing level of abstraction xD
-(edited)
-8:36
-The other typical FP functions, filter and fold/reduce, have their own traits: Filterable and Foldable.
-8:36
-Why is this Functor (or Filterable or Foldable) trait not available in Rust, then? Well, because Rust cannot represent traits for types like this with its current features (a good exercise would be trying it, perhaps via Generic Associated Types).
-For being able to do that, Rust would need to support something called higher-kinded types.
-8:36
-But don't let that get in the way of reasoning about what a map function can represent and what could make a type mappable!
-The end xD
+La función se llama `fmap` en lugar de `map` por razones históricas (`map` se definió inicialmente,
+cómo no, para usarse con listas, luego fue generalizada) y facilidad de uso (los novatos en Haskell
+comienzan usando `map` solo en listas y más adelante aprenden la abstracción para usar `fmap`).
+
+Existen implementaciones de `Functor` para muchos tipos en el ecosistema de Haskell, como para:
+
+- Listas
+- Conjuntos
+- Mapas
+- `Maybe` (el `Option` de Rust)
+- `Either` (el `Result` de Rust)
+- Tuplas de varios elementos
+- La aplicación de funciones en sí misma (¿Cuál podría ser la implementación de esto?)
+- y muchos otros, en creciente nivel de abstracción, para las que nuestra analogía de
+**tipos contenedores** empieza a quedarse corta[^functor-not-box].
+
+Las otras funciones típicas de la programación funcional que mencionamos al principio, `filter` y
+`fold` o `reduce`, tienen sus propios *traits* o *typeclasses*: [`Filterable`](https://hackage.haskell.org/package/witherable-0.5/docs/Witherable.html#t:Filterable) y [`Foldable`](https://hackage.haskell.org/package/base-4.20.0.1/docs/Prelude.html#t:Foldable).
+
+¿Por qué entonces este `Functor` (o `Filterable` o `Foldable`) no está disponible en Rust? Por la
+sencilla razón de que Rust por ahora no puede representar fácilmente *traits* de este tipo que sean
+lo suficientemente genéricos. Un buen ejercicio podría ser intentarlo, partiendo de alguno sencillo
+como `Option` y tratar de definir `Functor` e implementarlo para todo `T` (¡y `U`!) de `Option<T>`,
+quizá usando [tipos asociados genéricos](https://blog.rust-lang.org/2022/10/28/gats-stabilization.html#what-are-gats).
+
+Para poder expresar esto de forma ergonómica, Rust tendría que soportar lo que se conoce como
+*higher-kinded types*. No sé cómo se traduciría esto al español, ¿*Tipos de clasificación superior*, tal vez?
+
+No dejes que el no poder expresar estos conceptos en Rust u otros lenguajes te impida razonar sobre
+qué puede representar realmente la función `map` y qué podría cualificar a un tipo como *mapeable*.
+
+¡Hasta otra!
 
 [^fnonce]:
-    Realmente en Rust es `FnOnce(T) -> U`, pero esto es otra discusión.
+    Realmente en Rust es [`FnOnce(T) -> U`](https://doc.rust-lang.org/std/option/enum.Option.html#method.map), pero esto es otra discusión.
 
 [^maperr-maporelse]:
-    Aunque también existe `map_err` para actuar sobre la variante `Err(_)` o `map_or_else` para
-    actuar sobre las dos variantes.
+    Aunque también existe [`map_err`](https://doc.rust-lang.org/std/result/enum.Result.html#method.map_err) para actuar sobre la variante `Err(_)` o [`map_or_else`](https://doc.rust-lang.org/std/result/enum.Result.html#method.map_or_else) para
+    actuar sobre las dos variantes, generando un único tipo de salida `U`.
+
+[^functor-not-box]
+    [Un functor no es una caja.](https://cs-syd.eu/posts/2016-04-30-a-functor-is-not-a-box)
