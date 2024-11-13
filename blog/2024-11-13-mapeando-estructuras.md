@@ -23,7 +23,9 @@ Una manera útil de comprender la función `map` que también abarca su disponib
 *valor del tipo contenido*, sustituyéndolo por el valor de salida de la aplicación,
 dejando el *contenedor* intacto.
 
-![Representación de el uso de la función map usando contenedores como analogía](functor-diagram.png)
+:::{.center}
+![Representación de el uso de la función map usando contenedores como analogía](./img/functor-diagram.png)
+:::
 
 Así, un valor de tipo `Option<T>` se transforma en un valor de tipo `Option<U>` si llamamos a la
 función `map` pasándole una función que implemente `Fn(T) -> U`[^fnonce] que transformará `T` en
@@ -37,20 +39,23 @@ a diferencia de este, `Result` incluye un tipo en cada variante. La implementaci
 > Dado que `Result` se usa habitualmente en situaciones en las que propagamos los errores
 > en la variante `Err(_)` usando `?`, nos importa la primera ocurrencia de la variante `Err(_)`.
 >
-> La función `map`, pues, no actúa sobre la variante `Err(_)`[^maperr-maporelse].
+> La función `map`, pues, no actúa sobre la variante `Err(_)`.
 
 Entonces, partiendo de un `Result<T, E>` obtenemos un `Result<U, E>` pasando un
 `Fn(T) -> U`[^fnonce]. De nuevo, el valor de tipo `T` se transforma en un valor de tipo `U` pero el
-*envoltorio* `Result<_, E>` permanece inalterado.
+*envoltorio* `Result<_, E>` permanece inalterado[^maperr-maporelse].
 
 ¡Pero podríamos tener `map`s para muchos otros tipos! ¿Por qué no una tupla con dos (o más)
 elementos, como `(T, U)`? ¿Tiene sentido usar `map` aquí? ¿Por qué no un `struct` arbitrario que
 hayamos definido?
 
 ¿Tendría sentido la existencia de un *trait* llamado `Mappable` o algo parecido?
-*¡La respuesta es sí!*
 
-![Mind blown!](./mind_blown.gif)
+**¡La respuesta es sí!**
+
+:::{.center}
+![Mind blown!](./img/mind_blown.gif)
+:::
 
 En lenguajes de programación funcional como Haskell, el comportamiento de `map` está definido en
 lo equivalente a un *trait* de Rust (en dicho lenguaje, los *traits* se llaman *typeclasses*).
@@ -59,9 +64,11 @@ Este *trait* se llama `Functor`. La [documentación](https://hackage.haskell.org
 > Un tipo `f` es un `Functor` si proporciona una función `fmap` que, dados dos tipos arbitrarios `a`
 > y `b` permite aplicar cualquier función `(a -> b)` transformando `f a` en un `f b`, preservando la
 > estructura de `f`.
+>
+> [...]
 
 La función se llama `fmap` en lugar de `map` por razones históricas (`map` se definió inicialmente,
-cómo no, para usarse con listas, luego fue generalizada) y facilidad de uso (los novatos en Haskell
+cómo no, para usarse con listas, luego fue generalizada) y de facilidad de uso (los novatos en Haskell
 comienzan usando `map` solo en listas y más adelante aprenden la abstracción para usar `fmap`).
 
 Existen implementaciones de `Functor` para muchos tipos en el ecosistema de Haskell, como para:
@@ -73,8 +80,8 @@ Existen implementaciones de `Functor` para muchos tipos en el ecosistema de Hask
 - `Either` (el `Result` de Rust)
 - Tuplas de varios elementos
 - La aplicación de funciones en sí misma (¿Cuál podría ser la implementación de esto?)
-- y muchos otros, en creciente nivel de abstracción, para las que nuestra analogía de
-**tipos contenedores** empieza a quedarse corta[^functor-not-box].
+- ... y muchos otros, en creciente nivel de abstracción, para las que nuestra analogía de
+*tipos contenedores* empieza a quedarse corta [^functor-not-box].
 
 Las otras funciones típicas de la programación funcional que mencionamos al principio, `filter` y
 `fold` o `reduce`, tienen sus propios *traits* o *typeclasses*: [`Filterable`](https://hackage.haskell.org/package/witherable-0.5/docs/Witherable.html#t:Filterable) y [`Foldable`](https://hackage.haskell.org/package/base-4.20.0.1/docs/Prelude.html#t:Foldable).
@@ -100,5 +107,5 @@ qué puede representar realmente la función `map` y qué podría cualificar a u
     Aunque también existe [`map_err`](https://doc.rust-lang.org/std/result/enum.Result.html#method.map_err) para actuar sobre la variante `Err(_)` o [`map_or_else`](https://doc.rust-lang.org/std/result/enum.Result.html#method.map_or_else) para
     actuar sobre las dos variantes, generando un único tipo de salida `U`.
 
-[^functor-not-box]
+[^functor-not-box]:
     [Un functor no es una caja.](https://cs-syd.eu/posts/2016-04-30-a-functor-is-not-a-box)
