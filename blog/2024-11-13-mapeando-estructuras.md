@@ -32,6 +32,7 @@ modificar el *contenedor* en sí**.
 
 :::{.center}
 ![Representación del uso de la función map usando contenedores como analogía](./img/functor-diagram.png)
+Fuente: <https://functionalprogrammingcsharp.com/functors-monads>
 :::
 
 ## `map` en Rust
