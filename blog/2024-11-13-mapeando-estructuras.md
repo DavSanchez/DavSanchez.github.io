@@ -19,15 +19,15 @@ La concepción más popular de `map` (y también de las otras dos entidades que 
 
 Sin embargo, en algunos casos puede ser útil generalizar nuestra concepción de `map` un poco más para
 razonar mejor cómo se comporta en otros contextos. Por ejemplo, ¿qué hay de los tipos `Option` y
-`Result` en Rust? ¿Por qué existe un método `map` para estos dos tipos? ¿Es casual que ambos tengan
+`Result` en Rust? ¿Por qué existe un método `map` para estos dos tipos? ¿Es casual que ambos métodos tengan
 el mismo nombre?
 
-## Otro enfoque
+## Otra perspectiva
 
-Una manera útil de comprender la función `map` que también abarca su disponibilidad como método en
-`Option` y `Result` es considerarla como una función implementable para tipos de datos similares a
+Una manera alternativa de comprender la función `map` que también abarca su disponibilidad como método en
+`Option` y `Result` es considerarla como una función implementable para tipos de datos equivalentes a
 *contenedores de otros tipos*. De esta forma, `map` opera aplicando la función pasada como parámetro
-al *valor del tipo contenido*, sustituyéndolo por el valor de salida de la aplicación, **sin
+al *valor del tipo contenido*, sustituyéndolo por el valor de salida de la aplicación, pero **sin
 modificar el *contenedor* en sí**.
 
 :::{.center}
@@ -35,15 +35,15 @@ modificar el *contenedor* en sí**.
 Fuente: <https://functionalprogrammingcsharp.com/functors-monads>
 :::
 
-## `map` en Rust
+### `map` en Rust con esta perspectiva
 
-### En tipos `Option`
+#### En tipos `Option`
 
 Con el enfoque anterior, un valor de tipo `Option<T>` se transforma en un valor de tipo `Option<U>` si llamamos a la
 función `map` pasándole una función que implemente `Fn(T) -> U`[^fnonce] que transformará `T` en
 `U`, dejando el *contenedor* `Option<_>` intacto.
 
-### En tipos `Result`
+#### En tipos `Result`
 
 `Result` es un poco más interesante. Es un tipo de dato con dos variantes, igual que `Option`, pero
 a diferencia de este, `Result` incluye un tipo en cada variante. La implementación de `map` para
