@@ -24,8 +24,8 @@ el mismo nombre?
 
 ## Otra perspectiva
 
-Una manera alternativa de comprender la función `map` que también abarca su disponibilidad como método en
-`Option` y `Result` es considerarla como una función implementable para tipos de datos equivalentes a
+Una manera alternativa de comprender la función `map`, que también abarca su disponibilidad como método en
+`Option` y `Result`, es considerarla una función implementable para estructuras equivalentes a
 *contenedores de otros tipos*. De esta forma, `map` opera aplicando la función pasada como parámetro
 al *valor del tipo contenido*, sustituyéndolo por el valor de salida de la aplicación, pero **sin
 modificar el *contenedor* en sí**.
@@ -35,7 +35,7 @@ modificar el *contenedor* en sí**.
 Fuente: <https://functionalprogrammingcsharp.com/functors-monads>
 :::
 
-### `map` en Rust con esta perspectiva
+### `map`s en Rust con esta perspectiva
 
 #### En tipos `Option`
 
@@ -66,7 +66,7 @@ elementos, como `(T, U)`? ¿Por qué no un `struct` arbitrario que
 hayamos definido? ¿Tiene sentido usar `map` en estos casos?
 
 Ya que parecen existir múltiples estructuras que podrían admitir una definición de `map`,
-¿Tendría sentido la existencia de un *trait* (o, si lo tuyo es la Orientación a Objetos, una *interfaz*) llamado `Mappable` o algo parecido?
+¿Tendría sentido la existencia de un *trait* (o, si lo tuyo es la Orientación a Objetos, quizá una *interfaz*) llamado `Mappable` o algo parecido?
 
 **¡La respuesta es sí!**
 
@@ -89,7 +89,7 @@ La [documentación](https://hackage.haskell.org/package/base-4.20.0.1/docs/Prelu
 > [...]
 
 La función se llama `fmap` en lugar de `map` por razones históricas (`map` se definió inicialmente,
-cómo no, para usarse con listas, luego fue generalizada) y de facilidad de uso (los novatos en Haskell
+cómo no, para usarse con listas, luego fue generalizada) y de facilidad de uso (los recién llegados a Haskell
 comienzan usando `map` solo en listas y más adelante aprenden la abstracción para usar `fmap`).
 
 Esa "función `(a -> b)`" que se menciona en la documentación citada es el `Fn(T) -> U` en nuestros
@@ -103,7 +103,7 @@ Existen implementaciones de `Functor` para muchos tipos en el ecosistema de Hask
 - `Maybe` (el `Option` de Haskell)
 - `Either` (el `Result` de Haskell)
 - Tuplas de varios elementos
-- La aplicación de funciones en sí misma (¿Cuál podría ser la implementación de esto?)
+- La aplicación de funciones en sí misma (¿Cuál podría ser la implementación de esto? :wink:)
 - ... y muchos otros, en creciente nivel de abstracción, para las que nuestra analogía de
 *tipos contenedores* empieza a quedarse corta [^functor-not-box].
 
@@ -115,14 +115,13 @@ Las otras funciones típicas de la programación funcional que mencionamos al pr
 ## Volviendo a Rust
 
 ¿Por qué entonces este `Functor` (o `Filterable` o `Foldable`) no está disponible en Rust? Por la
-sencilla razón de que Rust por ahora no puede representar fácilmente *traits* de este tipo que sean
-lo suficientemente genéricos. Un buen ejercicio podría ser intentarlo, partiendo de alguno sencillo
-como `Option` y tratar de definir `Functor` e implementarlo para todo `T` (¡y `U`!) de `Option<T>`,
+sencilla razón de que Rust por ahora no puede representar fácilmente *traits* de este tipo, destinados a definirse para el *contenedor* y no para, digamos, tipos *completamente definidos*. Un buen ejercicio podría ser intentarlo, partiendo de alguno sencillo
+como `Option`, definiendo `Functor` e implementándolo para todo `T` (¡y `U`!) de `Option<T>`,
 quizá usando [tipos asociados genéricos](https://blog.rust-lang.org/2022/10/28/gats-stabilization.html#what-are-gats).
 
 Para poder expresar esto de forma ergonómica, Rust tendría que soportar algo conocido como
 [*higher-kinded types*](https://serokell.io/blog/kinds-and-hkts-in-haskell)[^hkt-es]. Sin ello,
-Rust no puede definir fácilmente un *trait* que sea solo aplicable para tipos genéricos.
+Rust no puede definir fácilmente un *trait* que sea solo aplicable para tipos que acepten parámetros genéricos. Como menciono en el párrafo anterior, pero con otras palabras, a la definición de `Functor` le interesa más el `Option<_>`, que el `Option<T>` para un `T` conocido.
 
 ## Cerrando
 
