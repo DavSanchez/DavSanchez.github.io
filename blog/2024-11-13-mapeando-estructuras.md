@@ -3,7 +3,7 @@ title: "\"Mapeando\" sobre estructuras de datos"
 short-title: "Mapeando sobre estructuras"
 date: 2024-11-13
 page:
-  image: ./img/functor-diagram.png
+  image: blog/img/functor-diagram.png
 ---
 <!-- LTeX: language=es -->
 
